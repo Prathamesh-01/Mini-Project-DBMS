@@ -1,0 +1,1 @@
+{"ast":null,"code":"var About = function About() {};\n\nexport default About;","map":{"version":3,"sources":["E:/Movie-Adder/pages/about.js"],"names":["About"],"mappings":"AAAA,IAAMA,KAAK,GAAG,SAARA,KAAQ,GAAM,CAEnB,CAFD;;AAIA,eAAeA,KAAf","sourcesContent":["const About = () => {\r\n    \r\n}\r\n\r\nexport default About"]},"metadata":{},"sourceType":"module"}
