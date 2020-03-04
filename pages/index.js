@@ -4,7 +4,7 @@ import Sidemenu from '../components/sidemenu'
 import Carousel from '../components/carousel'
 import MovieList from '../components/movielist'
 
-import {getMovies} from '../components/moviedb'
+import {getMovies} from '../actions/moviedb'
 import Link from 'next/link'
 
 /* 
