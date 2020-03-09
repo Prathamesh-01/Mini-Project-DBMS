@@ -1,7 +1,6 @@
-const Services = () => {
-    return (
-        <div>Services Page</div>
-    )
-}
+
+
+
+const Services = () => <div>Services page</div>
 
 export default Services

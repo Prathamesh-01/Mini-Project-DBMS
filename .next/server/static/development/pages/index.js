@@ -93,59 +93,72 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ "./actions/moviedb.js":
-/*!****************************!*\
-  !*** ./actions/moviedb.js ***!
-  \****************************/
-/*! exports provided: getMovies, getMoviesbyId */
+/***/ "./actions/index.js":
+/*!**************************!*\
+  !*** ./actions/index.js ***!
+  \**************************/
+/*! exports provided: getCategories, getMovies, createMovie, getMovieById, updateMovie, deleteMovie, getPosts */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCategories", function() { return getCategories; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMovies", function() { return getMovies; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMoviesbyId", function() { return getMoviesbyId; });
-/* harmony import */ var _components_movielist__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/movielist */ "./components/movielist.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMovie", function() { return createMovie; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMovieById", function() { return getMovieById; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateMovie", function() { return updateMovie; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteMovie", function() { return deleteMovie; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPosts", function() { return getPosts; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-const MOVIE_DATA = [{
-  id: '1',
-  name: 'The Shawshank Redemption',
-  releaseYear: 1994,
-  description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-  rating: 4.8,
-  genre: 'drama',
-  image: 'https://m.media-amazon.com/images/M/MV5BNjQ2NDA3MDcxMF5BMl5BanBnXkFtZTgwMjE5NTU0NzE@._V1_CR0,60,640,360_AL_UX477_CR0,0,477,268_AL_.jpg'
+const BASE_URL = 'http://localhost:3000';
+const MOVIE_DATA = [];
+const CATEGORY_DATA = [{
+  id: 'c-0',
+  name: 'all'
 }, {
-  id: '2',
-  name: 'The Dark Knight',
-  releaseYear: 2008,
-  description: 'When the menace known as The Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-  rating: 4.7,
-  genre: 'action, crime, drama',
-  image: 'https://img.cinemablend.com/filter:scale/quill/c/3/8/0/f/4/c380f4f12cfeec19f0c40c6f57db188f2f98cca8.jpg?mw=600'
+  id: 'c-1',
+  name: 'drama'
 }, {
-  id: '3',
-  name: 'Lord of the Rings',
-  releaseYear: 2004,
-  description: 'A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.',
-  rating: 4.9,
-  genre: 'adventure, drama, fantasy',
-  image: 'https://img.cinemablend.com/filter:scale/quill/0/f/5/2/a/6/0f52a6843a25c1a5c1f9a0c00548cad9e1d912e2.jpg?mw=600'
-}];
-const getMovies = () => {
+  id: 'c-2',
+  name: 'action'
+}, {
+  id: 'c-3',
+  name: 'adventure'
+}, {
+  id: 'c-4',
+  name: 'historical'
+}]; // 1. getCategories function
+// 2. get categories in index page
+// 3. provide categories to sidemenu
+// 4. in sidemenu iterate categories and display them
+
+const getCategories = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(MOVIE_DATA); // reject('Oops')
+      resolve(CATEGORY_DATA); // reject('Cannot fetch data!')
     }, 50);
-  }); // return {
-  //   MOVIE_DATA
-  // }
-};
-const getMoviesbyId = id => {
-  return new Promise((resolve, reject) => {
-    const movieIndex = MOVIE_DATA.findIndex(m => m.id === id);
-    const movie = MOVIE_DATA(movieIndex);
-    setTimeout(() => resolve(movie), 50);
   });
+};
+const getMovies = () => {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`${BASE_URL}/api/v1/movies`).then(res => res.data);
+};
+const createMovie = movie => {
+  movie.id = Math.random().toString(36).substr(2, 5);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(`${BASE_URL}/api/v1/movies`, movie).then(res => res.data);
+};
+const getMovieById = id => {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`${BASE_URL}/api/v1/movies/${id}`).then(res => res.data);
+};
+const updateMovie = movie => {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.patch(`${BASE_URL}/api/v1/movies/${movie.id}`, movie).then(res => res.data);
+};
+const deleteMovie = id => {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(`${BASE_URL}/api/v1/movies/${id}`).then(res => res.data);
+};
+const getPosts = () => {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`${BASE_URL}/api/v1/posts`).then(res => res.data);
 };
 
 /***/ }),
@@ -159,170 +172,364 @@ const getMoviesbyId = id => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "E:\\Movie-Adder\\components\\carousel.js";
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-jsx/style */ "styled-jsx/style");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 
-var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
-const Carousel = () => {
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+const Carousel = props => {
+  const {
+    images
+  } = props;
   return __jsx("div", {
     id: "carouselExampleIndicators",
-    className: "carousel slide my-4",
     "data-ride": "carousel",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 3
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel slide my-4"
   }, __jsx("ol", {
-    className: "carousel-indicators",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 4
-    },
-    __self: undefined
-  }, __jsx("li", {
+    className: "jsx-2936612483" + " " + "carousel-indicators"
+  }, images.map((image, index) => __jsx("li", {
+    key: image.id,
     "data-target": "#carouselExampleIndicators",
-    "data-slide-to": "0",
-    className: "active",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 5
-    },
-    __self: undefined
-  }), __jsx("li", {
-    "data-target": "#carouselExampleIndicators",
-    "data-slide-to": "1",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 6
-    },
-    __self: undefined
-  }), __jsx("li", {
-    "data-target": "#carouselExampleIndicators",
-    "data-slide-to": "2",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 7
-    },
-    __self: undefined
-  })), __jsx("div", {
-    className: "carousel-inner",
+    "data-slide-to": index,
+    className: "jsx-2936612483" + " " + ((index === 0 ? 'active' : '') || "")
+  }))), __jsx("div", {
     role: "listbox",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: undefined
-  }, __jsx("div", {
-    className: "carousel-item active",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel-inner"
+  }, images.map((image, index) => __jsx("div", {
+    key: image.id,
+    className: "jsx-2936612483" + " " + `carousel-item ${index === 0 ? 'active' : ''}`
   }, __jsx("img", {
-    className: "d-block img-fluid",
-    src: "http://placehold.it/900x350",
-    alt: "First slide",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 11
-    },
-    __self: undefined
-  })), __jsx("div", {
-    className: "carousel-item",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 13
-    },
-    __self: undefined
-  }, __jsx("img", {
-    className: "d-block img-fluid",
-    src: "http://placehold.it/900x350",
-    alt: "Second slide",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 14
-    },
-    __self: undefined
-  })), __jsx("div", {
-    className: "carousel-item",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 16
-    },
-    __self: undefined
-  }, __jsx("img", {
-    className: "d-block img-fluid",
-    src: "http://placehold.it/900x350",
-    alt: "Third slide",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 17
-    },
-    __self: undefined
-  }))), __jsx("a", {
-    className: "carousel-control-prev",
+    src: image.url,
+    alt: image.name,
+    className: "jsx-2936612483" + " " + "d-block img-fluid"
+  })))), __jsx("a", {
     href: "#carouselExampleIndicators",
     role: "button",
     "data-slide": "prev",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 20
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel-control-prev"
   }, __jsx("span", {
-    className: "carousel-control-prev-icon",
     "aria-hidden": "true",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 21
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel-control-prev-icon"
   }), __jsx("span", {
-    className: "sr-only",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 22
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "sr-only"
   }, "Previous")), __jsx("a", {
-    className: "carousel-control-next",
     href: "#carouselExampleIndicators",
     role: "button",
     "data-slide": "next",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 24
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel-control-next"
   }, __jsx("span", {
-    className: "carousel-control-next-icon",
     "aria-hidden": "true",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 25
-    },
-    __self: undefined
+    className: "jsx-2936612483" + " " + "carousel-control-next-icon"
   }), __jsx("span", {
-    className: "sr-only",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 26
-    },
-    __self: undefined
-  }, "Next")));
+    className: "jsx-2936612483" + " " + "sr-only"
+  }, "Next")), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+    id: "2936612483"
+  }, ".carousel-item.jsx-2936612483{max-height:400px;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkU6XFwxdjFDb2RpbmdcXG1vdmllLWFwcC1jb3Vyc2VcXGNvbXBvbmVudHNcXGNhcm91c2VsLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQTJDa0IsQUFHNEIsaUJBQ25CIiwiZmlsZSI6IkU6XFwxdjFDb2RpbmdcXG1vdmllLWFwcC1jb3Vyc2VcXGNvbXBvbmVudHNcXGNhcm91c2VsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiXG5cblxuY29uc3QgQ2Fyb3VzZWwgPSAocHJvcHMpID0+IHtcblxuICBjb25zdCB7IGltYWdlcyB9ID0gcHJvcHNcblxuXG5cbiAgcmV0dXJuIChcbiAgICA8ZGl2IGlkPVwiY2Fyb3VzZWxFeGFtcGxlSW5kaWNhdG9yc1wiIGNsYXNzTmFtZT1cImNhcm91c2VsIHNsaWRlIG15LTRcIiBkYXRhLXJpZGU9XCJjYXJvdXNlbFwiPlxuICAgICAgPG9sIGNsYXNzTmFtZT1cImNhcm91c2VsLWluZGljYXRvcnNcIj5cbiAgICAgICAgeyBpbWFnZXMubWFwKChpbWFnZSwgaW5kZXgpID0+IChcbiAgICAgICAgICAgIDxsaVxuICAgICAgICAgICAgICBrZXk9e2ltYWdlLmlkfVxuICAgICAgICAgICAgICBkYXRhLXRhcmdldD1cIiNjYXJvdXNlbEV4YW1wbGVJbmRpY2F0b3JzXCJcbiAgICAgICAgICAgICAgZGF0YS1zbGlkZS10bz17aW5kZXh9XG4gICAgICAgICAgICAgIGNsYXNzTmFtZT17aW5kZXggPT09IDAgPyAnYWN0aXZlJyA6ICcnfT5cbiAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICApXG4gICAgICAgICAgKVxuICAgICAgICB9XG4gICAgICA8L29sPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJjYXJvdXNlbC1pbm5lclwiIHJvbGU9XCJsaXN0Ym94XCI+XG4gICAgICAgIHsgaW1hZ2VzLm1hcCgoaW1hZ2UsIGluZGV4KSA9PiAoXG4gICAgICAgICAgICA8ZGl2IGtleT17aW1hZ2UuaWR9IGNsYXNzTmFtZT17YGNhcm91c2VsLWl0ZW0gJHtpbmRleCA9PT0gMCA/ICdhY3RpdmUnIDogJyd9YH0+XG4gICAgICAgICAgICAgIDxpbWdcbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJkLWJsb2NrIGltZy1mbHVpZFwiXG4gICAgICAgICAgICAgICAgc3JjPXtpbWFnZS51cmx9XG4gICAgICAgICAgICAgICAgYWx0PXtpbWFnZS5uYW1lfSAvPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICApXG4gICAgICAgICAgKVxuICAgICAgICB9XG4gICAgICA8L2Rpdj5cbiAgICAgIDxhIGNsYXNzTmFtZT1cImNhcm91c2VsLWNvbnRyb2wtcHJldlwiIGhyZWY9XCIjY2Fyb3VzZWxFeGFtcGxlSW5kaWNhdG9yc1wiIHJvbGU9XCJidXR0b25cIiBkYXRhLXNsaWRlPVwicHJldlwiPlxuICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJjYXJvdXNlbC1jb250cm9sLXByZXYtaWNvblwiIGFyaWEtaGlkZGVuPVwidHJ1ZVwiPjwvc3Bhbj5cbiAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwic3Itb25seVwiPlByZXZpb3VzPC9zcGFuPlxuICAgICAgPC9hPlxuICAgICAgPGEgY2xhc3NOYW1lPVwiY2Fyb3VzZWwtY29udHJvbC1uZXh0XCIgaHJlZj1cIiNjYXJvdXNlbEV4YW1wbGVJbmRpY2F0b3JzXCIgcm9sZT1cImJ1dHRvblwiIGRhdGEtc2xpZGU9XCJuZXh0XCI+XG4gICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImNhcm91c2VsLWNvbnRyb2wtbmV4dC1pY29uXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCI+PC9zcGFuPlxuICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJzci1vbmx5XCI+TmV4dDwvc3Bhbj5cbiAgICAgIDwvYT5cbiAgICAgIDxzdHlsZSBqc3g+e2BcbiAgICAgICAgLmNhcm91c2VsLWl0ZW0ge1xuICAgICAgICAgIG1heC1oZWlnaHQ6IDQwMHB4O1xuICAgICAgICB9XG4gICAgICBgfVxuICAgICAgPC9zdHlsZT5cbiAgICA8L2Rpdj5cbiAgKVxufVxuXG5leHBvcnQgZGVmYXVsdCBDYXJvdXNlbFxuXG5cbiJdfQ== */\n/*@ sourceURL=E:\\\\1v1Coding\\\\movie-app-course\\\\components\\\\carousel.js */"));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Carousel);
 
 /***/ }),
 
-/***/ "./components/movielist.js":
+/***/ "./components/modal.js":
+/*!*****************************!*\
+  !*** ./components/modal.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+class Modal extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+
+    _defineProperty(this, "submitModal", () => {
+      alert('Submitting Modal');
+      this.closeModal();
+    });
+
+    this.closeButton = null;
+  }
+
+  closeModal() {
+    this.closeButton.click();
+  }
+
+  render() {
+    return __jsx("div", null, __jsx("button", {
+      type: "button",
+      className: "btn btn-primary",
+      "data-toggle": "modal",
+      "data-target": "#exampleModal"
+    }, "Create Movie"), __jsx("div", {
+      className: "modal fade",
+      id: "exampleModal",
+      tabIndex: "-1",
+      role: "dialog",
+      "aria-labelledby": "exampleModalLabel",
+      "aria-hidden": "true"
+    }, __jsx("div", {
+      className: "modal-dialog",
+      role: "document"
+    }, __jsx("div", {
+      className: "modal-content"
+    }, __jsx("div", {
+      className: "modal-header"
+    }, __jsx("h5", {
+      className: "modal-title",
+      id: "exampleModalLabel"
+    }, "Create Movie"), __jsx("button", {
+      type: "button",
+      className: "close",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }, __jsx("span", {
+      "aria-hidden": "true"
+    }, "\xD7"))), __jsx("div", {
+      className: "modal-body"
+    }, this.props.children), __jsx("div", {
+      className: "modal-footer"
+    }, __jsx("button", {
+      ref: ele => this.closeButton = ele,
+      type: "button",
+      className: "btn btn-secondary",
+      "data-dismiss": "modal"
+    }, "Close"), this.props.hasSubmit && __jsx("button", {
+      onClick: this.submitModal,
+      type: "button",
+      className: "btn btn-primary"
+    }, "Save changes"))))));
+  }
+
+} // const Modal = (props) => {
+//   let closeButton = null
+//   const submitModal = () => {
+//     alert('Submitting Modal')
+//     closeButton.click()
+//   }
+//   return (
+//     <div>
+//       <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+//         Create Movie
+//       </button>
+//       <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+//         <div className="modal-dialog" role="document">
+//           <div className="modal-content">
+//             <div className="modal-header">
+//               <h5 className="modal-title" id="exampleModalLabel">Create Movie</h5>
+//               <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+//                 <span aria-hidden="true">&times;</span>
+//               </button>
+//             </div>
+//             <div className="modal-body">
+//               {props.children}
+//             </div>
+//             <div className="modal-footer">
+//               <button ref={ele => closeButton = ele} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+//               { props.hasSubmit &&
+//                 <button onClick={submitModal} type="button" className="btn btn-primary">Save changes</button>
+//               }
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Modal);
+
+/***/ }),
+
+/***/ "./components/movieCreateForm.js":
+/*!***************************************!*\
+  !*** ./components/movieCreateForm.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+const MovieCreateform = props => {
+  const {
+    0: isInitialDataLoaded,
+    1: setIsInitialDataLoaded
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+  const defaultData = {
+    name: '',
+    description: '',
+    rating: '',
+    image: '',
+    cover: '',
+    longDesc: ''
+  };
+  const formData = props.initialData ? _objectSpread({}, props.initialData) : defaultData;
+  const {
+    0: form,
+    1: setform
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(formData); // useEffect(() => {
+  //   if (props.initialData) {
+  //     setform(props.initialData)
+  //     setIsInitialDataLoaded(true)
+  //   }
+  // }, [isInitialDataLoaded])
+
+  const handleChange = event => {
+    const target = event.target;
+    const name = target.name;
+    setform(_objectSpread({}, form, {
+      [name]: target.value
+    }));
+  };
+
+  const handleGenreChange = event => {
+    const {
+      options
+    } = event.target;
+    const optionsLength = options.length;
+    let value = [];
+
+    for (let i = 0; i < optionsLength; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+
+    setform(_objectSpread({}, form, {
+      genre: value.toString()
+    }));
+  };
+
+  const submitform = () => {
+    props.handleFormSubmit(_objectSpread({}, form));
+  };
+
+  return __jsx("form", null, __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "name"
+  }, "Name"), __jsx("input", {
+    onChange: handleChange,
+    value: form.name,
+    name: "name",
+    type: "text",
+    className: "form-control",
+    id: "name",
+    "aria-describedby": "emailHelp",
+    placeholder: "Lord of the Rings"
+  })), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "description"
+  }, "Description"), __jsx("input", {
+    onChange: handleChange,
+    value: form.description,
+    name: "description",
+    type: "text",
+    className: "form-control",
+    id: "description",
+    placeholder: "Somewhere in Middle-earth..."
+  })), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "description"
+  }, "Rating"), __jsx("input", {
+    onChange: handleChange,
+    value: form.rating,
+    name: "rating",
+    type: "number",
+    max: "5",
+    min: "0",
+    className: "form-control",
+    id: "rating",
+    placeholder: "3"
+  }), __jsx("small", {
+    id: "emailHelp",
+    className: "form-text text-muted"
+  }, "Max: 5, Min: 0 ")), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "image"
+  }, "Image"), __jsx("input", {
+    onChange: handleChange,
+    value: form.image,
+    name: "image",
+    type: "text",
+    className: "form-control",
+    id: "image",
+    placeholder: "http://....."
+  })), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "cover"
+  }, "Cover"), __jsx("input", {
+    onChange: handleChange,
+    value: form.cover,
+    name: "cover",
+    type: "text",
+    className: "form-control",
+    id: "cover",
+    placeholder: "http://......"
+  })), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "longDesc"
+  }, "Long Description"), __jsx("textarea", {
+    onChange: handleChange,
+    value: form.longDesc,
+    name: "longDesc",
+    className: "form-control",
+    id: "longDesc",
+    rows: "3"
+  })), __jsx("div", {
+    className: "form-group"
+  }, __jsx("label", {
+    htmlFor: "genre"
+  }, "Genre"), __jsx("select", {
+    onChange: handleGenreChange,
+    multiple: true,
+    className: "form-control",
+    id: "genre"
+  }, __jsx("option", null, "drama"), __jsx("option", null, "music"), __jsx("option", null, "adventure"), __jsx("option", null, "historical"), __jsx("option", null, "action"))), __jsx("button", {
+    onClick: submitform,
+    type: "button",
+    className: "btn btn-primary"
+  }, props.submitButton || 'Create'));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (MovieCreateform);
+
+/***/ }),
+
+/***/ "./components/movieList.js":
 /*!*********************************!*\
-  !*** ./components/movielist.js ***!
+  !*** ./components/movieList.js ***!
   \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -333,55 +540,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "E:\\Movie-Adder\\components\\movielist.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// import React from 'react'
-// import Link from 'next/link'
-// class MovieList extends React.Component {
-//   shorten = (text, maxLength) => {
-//         if (text && text.length > maxLength) {
-//           return text.substr(0, maxLength) + '...'
-//         }  
-//         return text
-//     }   
-//     renderMovies(movies) {
-//         return movies.map(movie =>
-//           (
-//             <div key={movie.id} className="col-lg-4 col-md-6 mb-4">
-//               <div className="card h-100">
-//                 <Link href="/movies/[id]" as={`/movies/${movie.id}`}>
-//                   <a><img className="card-img-top" src={movie.image} alt="" /></a>
-//                 </Link>
-//                 <div className="card-body">
-//                   <h4 className="card-title">
-//                     <Link href="/movies/[id]" as={`/movies/${movie.id}`}>
-//                       <a>{movie.name}</a>
-//                     </Link>
-//                   </h4>
-//                   <div className="movie-genre">{movie.genre}</div>
-//                   <p className="card-text">{this.shorten(movie.description, 100)}</p>
-//                 </div>
-//                 <div className="card-footer">
-//                   <small className="text-muted">{movie.rating}</small>
-//                 </div>
-//               </div>
-//             </div>
-//           )
-//         )
-//     }
-//     render(){
-//         const {movies} = this.props;
-//         return (
-//             <React.Fragment>
-//                 {this.renderMovies(movies)}
-//             </React.Fragment>
-//         );
-//     }
-// }
-// export default MovieList;
 
 
 
@@ -401,110 +563,39 @@ class MovieList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
   renderMovies(movies) {
     return movies.map(movie => __jsx("div", {
       key: movie.id,
-      className: "col-lg-4 col-md-6 mb-4",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 66
-      },
-      __self: this
+      className: "col-lg-4 col-md-6 mb-4"
     }, __jsx("div", {
-      className: "card h-100",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 67
-      },
-      __self: this
+      className: "card h-100"
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
       href: "/movies/[id]",
-      as: `/movies/${movie.id}`,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 68
-      },
-      __self: this
-    }, __jsx("a", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 69
-      },
-      __self: this
-    }, __jsx("img", {
+      as: `/movies/${movie.id}`
+    }, __jsx("a", null, __jsx("img", {
       className: "card-img-top",
       src: movie.image,
-      alt: "",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 69
-      },
-      __self: this
+      alt: ""
     }))), __jsx("div", {
-      className: "card-body",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 71
-      },
-      __self: this
+      className: "card-body"
     }, __jsx("h4", {
-      className: "card-title",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 72
-      },
-      __self: this
+      className: "card-title"
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
       href: "/movies/[id]",
-      as: `/movies/${movie.id}`,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 73
-      },
-      __self: this
-    }, __jsx("a", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 74
-      },
-      __self: this
-    }, movie.name))), __jsx("div", {
-      className: "movie-genre",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 77
-      },
-      __self: this
+      as: `/movies/${movie.id}`
+    }, __jsx("a", null, movie.name))), __jsx("div", {
+      className: "movie-genre"
     }, movie.genre), __jsx("p", {
-      className: "card-text",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 78
-      },
-      __self: this
+      className: "card-text"
     }, this.shorten(movie.description, 100))), __jsx("div", {
-      className: "card-footer",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 80
-      },
-      __self: this
+      className: "card-footer"
     }, __jsx("small", {
-      className: "text-muted",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 81
-      },
-      __self: this
+      className: "text-muted"
     }, movie.rating)))));
   }
 
   render() {
-    // const { movies } = this.props
-    return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 93
-      },
-      __self: this
-    }, this.renderMovies(this.props.movies));
+    const {
+      movies
+    } = this.props;
+    return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, this.renderMovies(movies));
   }
 
 }
@@ -513,9 +604,9 @@ class MovieList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
 /***/ }),
 
-/***/ "./components/sidemenu.js":
+/***/ "./components/sideMenu.js":
 /*!********************************!*\
-  !*** ./components/sidemenu.js ***!
+  !*** ./components/sideMenu.js ***!
   \********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -524,122 +615,58 @@ class MovieList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "E:\\Movie-Adder\\components\\sidemenu.js";
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal */ "./components/modal.js");
+/* harmony import */ var _movieCreateForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./movieCreateForm */ "./components/movieCreateForm.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./actions/index.js");
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
-const Sidemenu = () => {
-  return __jsx("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 5
-    },
-    __self: undefined
-  }, __jsx("h1", {
-    className: "my-4",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 6
-    },
-    __self: undefined
-  }, "Shop Name"), __jsx("div", {
-    className: "list-group",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 7
-    },
-    __self: undefined
-  }, __jsx("a", {
+
+
+ // Containment
+
+const SideMenu = props => {
+  const {
+    categories
+  } = props;
+  const router = Object(next_router__WEBPACK_IMPORTED_MODULE_1__["useRouter"])();
+  let modal = null;
+
+  const handleCreateMovie = movie => {
+    Object(_actions__WEBPACK_IMPORTED_MODULE_4__["createMovie"])(movie).then(movies => {
+      modal.closeModal();
+      router.push('/');
+    });
+  };
+
+  return __jsx("div", null, __jsx(_modal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    ref: ele => modal = ele,
+    hasSubmit: false
+  }, __jsx(_movieCreateForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    handleFormSubmit: handleCreateMovie
+  })), __jsx("h1", {
+    className: "my-4"
+  }, props.appName), __jsx("div", {
+    className: "list-group"
+  }, categories.map(c => __jsx("a", {
+    onClick: () => props.changeCategory(c.name),
+    key: c.id,
     href: "#",
-    className: "list-group-item",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 8
-    },
-    __self: undefined
-  }, "Category 1"), __jsx("a", {
-    href: "#",
-    className: "list-group-item",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: undefined
-  }, "Category 2"), __jsx("a", {
-    href: "#",
-    className: "list-group-item",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: undefined
-  }, "Category 3")));
+    className: `list-group-item ${props.activeCategory === c.name ? 'active' : ''}`
+  }, c.name))));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Sidemenu);
+/* harmony default export */ __webpack_exports__["default"] = (SideMenu);
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js ***!
-  \*******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/object/define-property */ "core-js/library/fn/object/define-property");
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js ***!
-  \*******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/object/get-own-property-descriptor */ "core-js/library/fn/object/get-own-property-descriptor");
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/symbol.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/symbol.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/symbol */ "core-js/library/fn/symbol");
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/symbol/iterator */ "core-js/library/fn/symbol/iterator");
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs2/core-js/weak-map.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/core-js/weak-map.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! core-js/library/fn/weak-map */ "core-js/library/fn/weak-map");
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/interopRequireDefault.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -653,24 +680,18 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireWildcard.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/helpers/interopRequireWildcard.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/interopRequireWildcard.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _Object$getOwnPropertyDescriptor = __webpack_require__(/*! ../core-js/object/get-own-property-descriptor */ "./node_modules/@babel/runtime-corejs2/core-js/object/get-own-property-descriptor.js");
-
-var _Object$defineProperty = __webpack_require__(/*! ../core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js");
-
-var _typeof = __webpack_require__(/*! ../helpers/typeof */ "./node_modules/@babel/runtime-corejs2/helpers/typeof.js");
-
-var _WeakMap = __webpack_require__(/*! ../core-js/weak-map */ "./node_modules/@babel/runtime-corejs2/core-js/weak-map.js");
+var _typeof = __webpack_require__(/*! ../helpers/typeof */ "./node_modules/@babel/runtime/helpers/typeof.js");
 
 function _getRequireWildcardCache() {
-  if (typeof _WeakMap !== "function") return null;
-  var cache = new _WeakMap();
+  if (typeof WeakMap !== "function") return null;
+  var cache = new WeakMap();
 
   _getRequireWildcardCache = function _getRequireWildcardCache() {
     return cache;
@@ -697,14 +718,14 @@ function _interopRequireWildcard(obj) {
   }
 
   var newObj = {};
-  var hasPropertyDescriptor = _Object$defineProperty && _Object$getOwnPropertyDescriptor;
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
 
   for (var key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      var desc = hasPropertyDescriptor ? _Object$getOwnPropertyDescriptor(obj, key) : null;
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
 
       if (desc && (desc.get || desc.set)) {
-        _Object$defineProperty(newObj, key, desc);
+        Object.defineProperty(newObj, key, desc);
       } else {
         newObj[key] = obj[key];
       }
@@ -724,27 +745,23 @@ module.exports = _interopRequireWildcard;
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs2/helpers/typeof.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/helpers/typeof.js ***!
-  \***************************************************************/
+/***/ "./node_modules/@babel/runtime/helpers/typeof.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+  \*******************************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var _Symbol$iterator = __webpack_require__(/*! ../core-js/symbol/iterator */ "./node_modules/@babel/runtime-corejs2/core-js/symbol/iterator.js");
-
-var _Symbol = __webpack_require__(/*! ../core-js/symbol */ "./node_modules/@babel/runtime-corejs2/core-js/symbol.js");
-
-function _typeof2(obj) { if (typeof _Symbol === "function" && typeof _Symbol$iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof _Symbol === "function" && obj.constructor === _Symbol && obj !== _Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
-  if (typeof _Symbol === "function" && _typeof2(_Symbol$iterator) === "symbol") {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
       return _typeof2(obj);
     };
   } else {
     module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof _Symbol === "function" && obj.constructor === _Symbol && obj !== _Symbol.prototype ? "symbol" : _typeof2(obj);
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
     };
   }
 
@@ -765,20 +782,20 @@ module.exports = _typeof;
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireDefault */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js");
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
-var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireWildcard.js");
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js");
 
 exports.__esModule = true;
 exports.default = void 0;
 
-var _url = __webpack_require__(/*! url */ "url");
-
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
-var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ "./node_modules/next/dist/client/router.js"));
+var _url = __webpack_require__(/*! url */ "url");
 
 var _utils = __webpack_require__(/*! ../next-server/lib/utils */ "./node_modules/next/dist/next-server/lib/utils.js");
+
+var _router = _interopRequireDefault(__webpack_require__(/*! ./router */ "./node_modules/next/dist/client/router.js"));
 
 function isLocal(href) {
   var url = (0, _url.parse)(href, false, true);
@@ -877,7 +894,6 @@ class Link extends _react.Component {
     });
 
     this.linkClicked = e => {
-      // @ts-ignore target exists on currentTarget
       var {
         nodeName,
         target
@@ -939,21 +955,23 @@ class Link extends _react.Component {
     this.cleanUpListeners();
   }
 
-  getHref() {
+  getPaths() {
     var {
       pathname
     } = window.location;
     var {
-      href: parsedHref
+      href: parsedHref,
+      as: parsedAs
     } = this.formatUrls(this.props.href, this.props.as);
-    return (0, _url.resolve)(pathname, parsedHref);
+    var resolvedHref = (0, _url.resolve)(pathname, parsedHref);
+    return [resolvedHref, parsedAs ? (0, _url.resolve)(pathname, parsedAs) : resolvedHref];
   }
 
   handleRef(ref) {
-    var isPrefetched = prefetched[this.getHref()];
-
     if (this.p && IntersectionObserver && ref && ref.tagName) {
       this.cleanUpListeners();
+      var isPrefetched = prefetched[this.getPaths().join( // Join on an invalid URI character
+      '%')];
 
       if (!isPrefetched) {
         this.cleanUpListeners = listenToIntersections(ref, () => {
@@ -965,14 +983,26 @@ class Link extends _react.Component {
   // as per https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
 
 
-  prefetch() {
+  prefetch(options) {
     if (!this.p || true) return; // Prefetch the JSON page if asked (only in the client)
 
-    var href = this.getHref();
+    var paths = this.getPaths(); // We need to handle a prefetch error here since we may be
+    // loading with priority which can reject but we don't
+    // want to force navigation since this is only a prefetch
 
-    _router.default.prefetch(href);
+    _router.default.prefetch(paths[
+    /* href */
+    0], paths[
+    /* asPath */
+    1], options).catch(err => {
+      if (true) {
+        // rethrow to show invalid URL errors
+        throw err;
+      }
+    });
 
-    prefetched[href] = true;
+    prefetched[paths.join( // Join on an invalid URI character
+    '%')] = true;
   }
 
   render() {
@@ -1006,7 +1036,9 @@ class Link extends _react.Component {
           child.props.onMouseEnter(e);
         }
 
-        this.prefetch();
+        this.prefetch({
+          priority: true
+        });
       },
       onClick: e => {
         if (child.props && typeof child.props.onClick === 'function') {
@@ -1076,9 +1108,9 @@ exports.default = _default;
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireWildcard.js");
+var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js");
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireDefault */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js");
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
 exports.__esModule = true;
 exports.useRouter = useRouter;
@@ -1112,7 +1144,7 @@ var singletonRouter = {
 
 }; // Create public properties and methods of the router in the singletonRouter
 
-var urlPropertyFields = ['pathname', 'route', 'query', 'asPath', 'components'];
+var urlPropertyFields = ['pathname', 'route', 'query', 'asPath', 'components', 'isFallback'];
 var routerEvents = ['routeChangeStart', 'beforeHistoryChange', 'routeChangeComplete', 'routeChangeError', 'hashChangeStart', 'hashChangeComplete'];
 var coreMethodFields = ['push', 'replace', 'reload', 'back', 'prefetch', 'beforePopState']; // Events is a static property on the router, the router doesn't have to be initialized to use it
 
@@ -1238,7 +1270,7 @@ function makePublicRouterInstance(router) {
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireDefault */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js");
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
 
 exports.__esModule = true;
 exports.default = withRouter;
@@ -1384,13 +1416,64 @@ const route_matcher_1 = __webpack_require__(/*! ./utils/route-matcher */ "./node
 const route_regex_1 = __webpack_require__(/*! ./utils/route-regex */ "./node_modules/next/dist/next-server/lib/router/utils/route-regex.js");
 
 function addBasePath(path) {
-  // @ts-ignore variable is always a string
+  // variable is always a string
   const p = "";
   return path.indexOf(p) !== 0 ? p + path : path;
 }
 
 function toRoute(path) {
   return path.replace(/\/$/, '') || '/';
+}
+
+const prepareRoute = path => toRoute(!path || path === '/' ? '/index' : path);
+
+function fetchNextData(pathname, query, isServerRender, cb) {
+  let attempts = isServerRender ? 3 : 1;
+
+  function getResponse() {
+    return fetch(utils_1.formatWithValidation({
+      // @ts-ignore __NEXT_DATA__
+      pathname: `/_next/data/${__NEXT_DATA__.buildId}${pathname}.json`,
+      query
+    }), {
+      // Cookies are required to be present for Next.js' SSG "Preview Mode".
+      // Cookies may also be required for `getServerSideProps`.
+      //
+      // > `fetch` won’t send cookies, unless you set the credentials init
+      // > option.
+      // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+      //
+      // > For maximum browser compatibility when it comes to sending &
+      // > receiving cookies, always supply the `credentials: 'same-origin'`
+      // > option instead of relying on the default.
+      // https://github.com/github/fetch#caveats
+      credentials: 'same-origin'
+    }).then(res => {
+      if (!res.ok) {
+        if (--attempts > 0 && res.status >= 500) {
+          return getResponse();
+        }
+
+        throw new Error(`Failed to load static props`);
+      }
+
+      return res.json();
+    });
+  }
+
+  return getResponse().then(data => {
+    return cb ? cb(data) : data;
+  }).catch(err => {
+    // We should only trigger a server-side transition if this was caused
+    // on a client-side transition. Otherwise, we'd get into an infinite
+    // loop.
+    if (!isServerRender) {
+      ;
+      err.code = 'PAGE_LOAD_ERROR';
+    }
+
+    throw err;
+  });
 }
 
 class Router {
@@ -1401,7 +1484,8 @@ class Router {
     wrapApp,
     Component,
     err,
-    subscription
+    subscription,
+    isFallback
   }) {
     // Static Data Cache
     this.sdc = {};
@@ -1430,7 +1514,7 @@ class Router {
       // can be caused by navigating back from an external site
 
 
-      if (e.state && this.isSsr && e.state.url === this.pathname && e.state.as === this.asPath) {
+      if (e.state && this.isSsr && e.state.as === this.asPath && url_1.parse(e.state.url).pathname === this.pathname) {
         return;
       } // If the downstream application returns falsy, return.
       // They will then be responsible for handling the event.
@@ -1455,24 +1539,18 @@ class Router {
       this.replace(url, as, options);
     };
 
-    this._getStaticData = (asPath, _cachedData) => {
-      let pathname = url_1.parse(asPath).pathname;
-      pathname = toRoute(!pathname || pathname === '/' ? '/index' : pathname);
-      return  false ? undefined : fetch( // @ts-ignore __NEXT_DATA__
-      `/_next/data/${__NEXT_DATA__.buildId}${pathname}.json`).then(res => {
-        if (!res.ok) {
-          throw new Error(`Failed to load static props`);
-        }
+    this._getStaticData = asPath => {
+      const pathname = prepareRoute(url_1.parse(asPath).pathname);
+      return  false ? undefined : fetchNextData(pathname, null, this.isSsr, data => this.sdc[pathname] = data);
+    };
 
-        return res.json();
-      }).then(data => {
-        this.sdc[pathname] = data;
-        return data;
-      }).catch(err => {
-        ;
-        err.code = 'PAGE_LOAD_ERROR';
-        throw err;
-      });
+    this._getServerData = asPath => {
+      let {
+        pathname,
+        query
+      } = url_1.parse(asPath, true);
+      pathname = prepareRoute(pathname);
+      return fetchNextData(pathname, query, this.isSsr);
     }; // represents the current component key
 
 
@@ -1486,7 +1564,9 @@ class Router {
       this.components[this.route] = {
         Component,
         props: initialProps,
-        err
+        err,
+        __N_SSG: initialProps && initialProps.__N_SSG,
+        __N_SSP: initialProps && initialProps.__N_SSP
       };
     }
 
@@ -1494,7 +1574,6 @@ class Router {
       Component: App
     }; // Backwards compat for Router.router.events
     // TODO: Should be remove the following major version as it was never documented
-    // @ts-ignore backwards compatibility
 
     this.events = Router.events;
     this.pageLoader = pageLoader;
@@ -1510,6 +1589,7 @@ class Router {
     // back from external site
 
     this.isSsr = true;
+    this.isFallback = isFallback;
 
     if (false) {}
   } // @deprecated backwards compatibility even though it's a private method.
@@ -1530,7 +1610,9 @@ class Router {
     }
 
     const newData = Object.assign(Object.assign({}, data), {
-      Component
+      Component,
+      __N_SSG: mod.__N_SSG,
+      __N_SSP: mod.__N_SSP
     });
     this.components[route] = newData; // pages/_app.js updated
 
@@ -1633,8 +1715,7 @@ class Router {
 
       if (!this.urlIsNew(as)) {
         method = 'replaceState';
-      } // @ts-ignore pathname is always a string
-
+      }
 
       const route = toRoute(pathname);
       const {
@@ -1665,7 +1746,6 @@ class Router {
       }
 
       Router.events.emit('routeChangeStart', as); // If shallow is true and the route exists in the router cache we reuse the previous result
-      // @ts-ignore pathname is always a string
 
       this.getRouteInfo(route, pathname, query, as, shallow).then(routeInfo => {
         const {
@@ -1678,17 +1758,13 @@ class Router {
 
         Router.events.emit('beforeHistoryChange', as);
         this.changeState(method, url, addBasePath(as), options);
-        const hash = window.location.hash.substring(1);
 
         if (true) {
           const appComp = this.components['/_app'].Component;
           window.next.isPrerendered = appComp.getInitialProps === appComp.origGetInitialProps && !routeInfo.Component.getInitialProps;
-        } // @ts-ignore pathname is always defined
+        }
 
-
-        this.set(route, pathname, query, as, Object.assign(Object.assign({}, routeInfo), {
-          hash
-        }));
+        this.set(route, pathname, query, as, routeInfo);
 
         if (error) {
           Router.events.emit('routeChangeError', error, as);
@@ -1706,8 +1782,7 @@ class Router {
       if (typeof window.history === 'undefined') {
         console.error(`Warning: window.history is not available.`);
         return;
-      } // @ts-ignore method should always exist on history
-
+      }
 
       if (typeof window.history[method] === 'undefined') {
         console.error(`Warning: window.history.${method} is not available`);
@@ -1716,12 +1791,14 @@ class Router {
     }
 
     if (method !== 'pushState' || utils_1.getURL() !== as) {
-      // @ts-ignore method should always exist on history
       window.history[method]({
         url,
         as,
         options
-      }, null, as);
+      }, // Most browsers currently ignores this parameter, although they may use it in the future.
+      // Passing the empty string here should be safe against future changes to the method.
+      // https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState
+      '', as);
     }
   }
 
@@ -1733,42 +1810,9 @@ class Router {
       return Promise.resolve(cachedRouteInfo);
     }
 
-    return new Promise((resolve, reject) => {
-      if (cachedRouteInfo) {
-        return resolve(cachedRouteInfo);
-      }
-
-      this.fetchComponent(route).then(Component => resolve({
-        Component
-      }), reject);
-    }).then(routeInfo => {
-      const {
-        Component
-      } = routeInfo;
-
-      if (true) {
-        const {
-          isValidElementType
-        } = __webpack_require__(/*! react-is */ "react-is");
-
-        if (!isValidElementType(Component)) {
-          throw new Error(`The default export is not a React Component in page: "${pathname}"`);
-        }
-      }
-
-      return this._getData(() => Component.__N_SSG ? this._getStaticData(as) : this.getInitialProps(Component, // we provide AppTree later so this needs to be `any`
-      {
-        pathname,
-        query,
-        asPath: as
-      })).then(props => {
-        routeInfo.props = props;
-        this.components[route] = routeInfo;
-        return routeInfo;
-      });
-    }).catch(err => {
+    const handleError = (err, loadErrorFail) => {
       return new Promise(resolve => {
-        if (err.code === 'PAGE_LOAD_ERROR') {
+        if (err.code === 'PAGE_LOAD_ERROR' || loadErrorFail) {
           // If we can't load the page it could be one of following reasons
           //  1. Page doesn't exists
           //  2. Page does exist in a different zone
@@ -1791,7 +1835,10 @@ class Router {
           });
         }
 
-        resolve(this.fetchComponent('/_error').then(Component => {
+        resolve(this.fetchComponent('/_error').then(res => {
+          const {
+            page: Component
+          } = res;
           const routeInfo = {
             Component,
             err
@@ -1812,12 +1859,52 @@ class Router {
               resolve(routeInfo);
             });
           });
-        }));
+        }).catch(err => handleError(err, true)));
       });
-    });
+    };
+
+    return new Promise((resolve, reject) => {
+      if (cachedRouteInfo) {
+        return resolve(cachedRouteInfo);
+      }
+
+      this.fetchComponent(route).then(res => resolve({
+        Component: res.page,
+        __N_SSG: res.mod.__N_SSG,
+        __N_SSP: res.mod.__N_SSP
+      }), reject);
+    }).then(routeInfo => {
+      const {
+        Component,
+        __N_SSG,
+        __N_SSP
+      } = routeInfo;
+
+      if (true) {
+        const {
+          isValidElementType
+        } = __webpack_require__(/*! react-is */ "react-is");
+
+        if (!isValidElementType(Component)) {
+          throw new Error(`The default export is not a React Component in page: "${pathname}"`);
+        }
+      }
+
+      return this._getData(() => __N_SSG ? this._getStaticData(as) : __N_SSP ? this._getServerData(as) : this.getInitialProps(Component, // we provide AppTree later so this needs to be `any`
+      {
+        pathname,
+        query,
+        asPath: as
+      })).then(props => {
+        routeInfo.props = props;
+        this.components[route] = routeInfo;
+        return routeInfo;
+      });
+    }).catch(handleError);
   }
 
   set(route, pathname, query, as, data) {
+    this.isFallback = false;
     this.route = route;
     this.pathname = pathname;
     this.query = query;
@@ -1884,13 +1971,14 @@ class Router {
     return this.asPath !== asPath;
   }
   /**
-   * Prefetch `page` code, you may wait for the data during `page` rendering.
+   * Prefetch page code, you may wait for the data during page rendering.
    * This feature only works in production!
-   * @param url of prefetched `page`
+   * @param url the href of prefetched page
+   * @param asPath the as path of the prefetched page
    */
 
 
-  prefetch(url) {
+  prefetch(url, asPath = url, options = {}) {
     return new Promise((resolve, reject) => {
       const {
         pathname,
@@ -1908,11 +1996,9 @@ class Router {
 
       if (true) {
         return;
-      } // @ts-ignore pathname is always defined
+      }
 
-
-      const route = toRoute(pathname);
-      this.pageLoader.prefetch(route).then(resolve, reject);
+      Promise.all([this.pageLoader.prefetchData(url, asPath), this.pageLoader[options.priority ? 'loadPage' : 'prefetch'](toRoute(pathname))]).then(() => resolve(), reject);
     });
   }
 
@@ -1923,7 +2009,7 @@ class Router {
       cancelled = true;
     };
 
-    const Component = await this.pageLoader.loadPage(route);
+    const componentResult = await this.pageLoader.loadPage(route);
 
     if (cancelled) {
       const error = new Error(`Abort fetching component for route: "${route}"`);
@@ -1935,7 +2021,7 @@ class Router {
       this.clc = null;
     }
 
-    return Component;
+    return componentResult;
   }
 
   _getData(fn) {
@@ -2263,13 +2349,10 @@ module.exports = __webpack_require__(/*! ./dist/client/link */ "./node_modules/n
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_sidemenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/sidemenu */ "./components/sidemenu.js");
+/* harmony import */ var _components_sideMenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/sideMenu */ "./components/sideMenu.js");
 /* harmony import */ var _components_carousel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/carousel */ "./components/carousel.js");
-/* harmony import */ var _components_movielist__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/movielist */ "./components/movielist.js");
-/* harmony import */ var _actions_moviedb__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions/moviedb */ "./actions/moviedb.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_5__);
-var _jsxFileName = "E:\\Movie-Adder\\pages\\index.js";
+/* harmony import */ var _components_movieList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/movieList */ "./components/movieList.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions */ "./actions/index.js");
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
@@ -2277,166 +2360,139 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
-/* 
-Issues -> 
-  1. I am not able to do async for home function, i.e to provide intial props to the function
-*/
-
-const Home = () => {
-  // const {movies} = props
+const Home = props => {
   const {
-    0: movies,
-    1: setmovies
-  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    const fetchData = async () => {
-      const resMovies = await Object(_actions_moviedb__WEBPACK_IMPORTED_MODULE_4__["getMovies"])();
-      setmovies(resMovies);
-    };
+    images,
+    categories,
+    movies
+  } = props;
+  const {
+    0: filter,
+    1: setFilter
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])('all');
 
-    fetchData(); // getMovies().then((movies) => {
-    //   setmovies(movies)
-    // })
-  });
-  return __jsx("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 32
-    },
-    __self: undefined
+  const changeCategory = category => {
+    setFilter(category);
+  };
+
+  const filterMovies = movies => {
+    if (filter === 'all') {
+      return movies;
+    }
+
+    return movies.filter(m => {
+      return m.genre && m.genre.includes(filter);
+    });
+  };
+
+  return __jsx("div", null, __jsx("div", {
+    className: "home-page"
   }, __jsx("div", {
-    className: "home-page",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 33
-    },
-    __self: undefined
+    className: "container"
   }, __jsx("div", {
-    className: "container",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 34
-    },
-    __self: undefined
+    className: "row"
   }, __jsx("div", {
-    className: "row",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 35
-    },
-    __self: undefined
-  }, __jsx("div", {
-    className: "col-lg-3",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 36
-    },
-    __self: undefined
-  }, __jsx(_components_sidemenu__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 37
-    },
-    __self: undefined
+    className: "col-lg-3"
+  }, __jsx(_components_sideMenu__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    changeCategory: changeCategory,
+    activeCategory: filter,
+    categories: categories,
+    appName: "Categories"
   })), __jsx("div", {
-    className: "col-lg-9",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 40
-    },
-    __self: undefined
+    className: "col-lg-9"
   }, __jsx(_components_carousel__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 41
-    },
-    __self: undefined
-  }), __jsx("div", {
-    className: "row",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 42
-    },
-    __self: undefined
-  }, __jsx(_components_movielist__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    movies: movies,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 43
-    },
-    __self: undefined
+    images: images
+  }), __jsx("h1", null, "Displaying ", filter, " movies"), __jsx("div", {
+    className: "row"
+  }, __jsx(_components_movieList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    movies: filterMovies(movies) || []
   })))))));
-}; // Home.getIntialProps = async() => {
-//   const movies = getMovies()
-//   return {
-//     movies: movies
-//   }
-// }
-// class Home extends React.Component{
-//   static async getIntialProps(){
+};
+
+Home.getInitialProps = async () => {
+  const movies = await Object(_actions__WEBPACK_IMPORTED_MODULE_4__["getMovies"])();
+  const categories = await Object(_actions__WEBPACK_IMPORTED_MODULE_4__["getCategories"])();
+  const images = movies.map(movie => ({
+    id: `image-${movie.id}`,
+    url: movie.cover,
+    name: movie.name
+  }));
+  return {
+    movies,
+    images,
+    categories
+  };
+}; // class Home extends React.Component {
+//   static async getInitialProps() {
 //     const movies = await getMovies()
 //     return {
-//       movies: movies
+//       movies
 //     }
 //   }
-// constructor(props) {
-//   super(props);
-//   this.state = {
-//     movies: []
-//   }
-// }
-// state = {
-//   movies: []
-// }
-// async componentDidMount() {
-//   const movies = await getMovies();
-//   this.setState({movies})
-// }
-// componentDidMount() {
-//   getMovies().then((movies) => {
-//     this.setState({movies})
-//   })
-//   .catch((error) => {
-//     alert(error)
-//   })
-// }
-// render() {
-//   const {movies} = this.props
-//   return (
-//     <div>
-//       <Head>
-//         <title>Home</title>
-//         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
-//         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
-//         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossOrigin="anonymous"></script>
-//         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossOrigin="anonymous"></script>
-//       </Head>
-//       <Navbar />
-//       <div className = "home-page">
-//         <div className="container">
-//           <div className="row">
-//             <div className="col-lg-3">
-//               <Sidemenu />
-//             </div>
-//             <div className="col-lg-9">  
-//               <Carousel />
-//               <div className="row">
-//                 <MovieList Moviedata = {movies}/>
+//   // constructor(props) {
+//   //   super(props)
+//   //   this.state = {
+//   //     movies: [],
+//   //     errorMessage: ''
+//   //   }
+//   // }
+//   // state = {
+//   //   movies: []
+//   // }
+//   // Called only once when componenent is mounted!
+//   // async componentDidMount() {
+//   //   const movies = await getMovies()
+//   //   this.setState({movies})
+//   // }
+//   // Is called only on Client (Browser...)
+//   // componentDidMount() {
+//   //   getMovies()
+//   //     .then((movies) => {
+//   //       this.setState({movies})
+//   //     })
+//   //     .catch((error) => {
+//   //       this.setState({errorMessage: error})
+//   //     })
+//   // }
+//   render() {
+//     const { movies } = this.props
+//     return (
+//       <div>
+//         <Head>
+//           <title>Home</title>
+//           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
+//           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossOrigin="anonymous"></script>
+//           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossOrigin="anonymous"></script>
+//           <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossOrigin="anonymous"></script>
+//         </Head>
+//         <Navbar />
+//         <div className="home-page">
+//           <div className="container">
+//             <div className="row">
+//               <div className="col-lg-3">
+//                 <SideMenu
+//                   appName={"Movie DB"}
+//                 />
+//               </div>
+//               <div className="col-lg-9">
+//                 <Carousel />
+//                 <div className="row">
+//                   <MovieList movies={movies} />
+//                 </div>
 //               </div>
 //             </div>
 //           </div>
 //         </div>
+//         <Footer />
+//         <style jsx>{`
+//           .home-page {
+//             padding-top: 80px;
+//           }
+//         `}
+//         </style>
 //       </div>
-//       <Footer />
-//       <style jsx>{`
-//         .home-page {
-//           padding-top: 60px;
-//         }
-//       `}
-//       </style>
-//     </div>
-//   );
-// }
+//     )
+//   }
 // }
 
 
@@ -2451,63 +2507,30 @@ const Home = () => {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! E:\Movie-Adder\pages\index.js */"./pages/index.js");
+module.exports = __webpack_require__(/*! E:\1v1Coding\movie-app-course\pages\index.js */"./pages/index.js");
 
 
 /***/ }),
 
-/***/ "core-js/library/fn/object/define-property":
-/*!************************************************************!*\
-  !*** external "core-js/library/fn/object/define-property" ***!
-  \************************************************************/
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("core-js/library/fn/object/define-property");
+module.exports = require("axios");
 
 /***/ }),
 
-/***/ "core-js/library/fn/object/get-own-property-descriptor":
-/*!************************************************************************!*\
-  !*** external "core-js/library/fn/object/get-own-property-descriptor" ***!
-  \************************************************************************/
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("core-js/library/fn/object/get-own-property-descriptor");
-
-/***/ }),
-
-/***/ "core-js/library/fn/symbol":
-/*!********************************************!*\
-  !*** external "core-js/library/fn/symbol" ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("core-js/library/fn/symbol");
-
-/***/ }),
-
-/***/ "core-js/library/fn/symbol/iterator":
-/*!*****************************************************!*\
-  !*** external "core-js/library/fn/symbol/iterator" ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("core-js/library/fn/symbol/iterator");
-
-/***/ }),
-
-/***/ "core-js/library/fn/weak-map":
-/*!**********************************************!*\
-  !*** external "core-js/library/fn/weak-map" ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("core-js/library/fn/weak-map");
+module.exports = require("next/router");
 
 /***/ }),
 
@@ -2552,6 +2575,17 @@ module.exports = require("react");
 /***/ (function(module, exports) {
 
 module.exports = require("react-is");
+
+/***/ }),
+
+/***/ "styled-jsx/style":
+/*!***********************************!*\
+  !*** external "styled-jsx/style" ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("styled-jsx/style");
 
 /***/ }),
 

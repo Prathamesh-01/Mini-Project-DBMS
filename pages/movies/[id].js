@@ -1,15 +1,16 @@
 import {useRouter} from 'next/router'
-import { getMoviesbyId } from '../../actions/moviedb'
+import { getMoviesbyId } from '../../actions'
 
 
 const Movie = (props) => {
     const router = useRouter()
     const { id } = router.query
     const {movie} = props
+    // console.log(movie["2"])
     return (
         <div className = "container">
         <div className="jumbotron">
-            <h1 className="display-4">{movie.name}</h1>
+            <h1 className="display-4">{movie.rating}</h1>
             <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
             <hr className="my-4"/>
             <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
@@ -22,9 +23,9 @@ const Movie = (props) => {
     )
 }
 
-Movie.getIntialProps = () => {
-    const movie = getMoviesbyId("2")
-
+Movie.getIntialProps = async () => {
+    const movie = await getMoviesbyId("2")
+    // console.log("Helo")
     return {movie}
 }
 
